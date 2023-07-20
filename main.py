@@ -1,67 +1,69 @@
-def options():
-    print('''Escolha uma opção:
+fornecedores = {}
 
-            1. Cadastrar Fornecedor
-            2. Listar Fornecedores
-            3. Procurar dados Fornecedor
-            4. Deletar Fornecedor
-            0. Sair      
-            ''')
+def adicionar_fornecedor():
+    codigo = input("Digite o código do fornecedor: ")
+    nome = input("Digite o nome do fornecedor: ")
+    telefone = input("Digite o telefone do fornecedor: ")
+    email = input("Digite o email do fornecedor: ")
+    
+    fornecedores[codigo] = {'Nome': nome, 'Telefone': telefone, 'Email': email}
+    print("Fornecedor cadastrado com sucesso!")
 
-def main():
-    supplier = []
-
-    while True:
-        options()
-        option = int(input('Selecione uma opção: '))
-        if (option == 1):
-            registration(supplier)
-        elif (option == 2):
-            display(supplier)
-        elif (option == 3):
-            search(supplier)
-        elif (option == 4 and len(supplier) != 0):
-            delete(supplier)
-        elif (option == 0):
-            break
-        else:
-            print('Opção inválida')
-
-def registration(supllier):
-    identifier = int((input('Informe ID: ')))
-    name  = (input('Informe Nome: '))
-    phone = (input('Informe Telefone: '))
-    mail  = (input('Informe E-mail:  '))
-    supllier.append((identifier, name, phone, mail))
-
-def display(supplier):
-    for supplier in supplier:
-        identifier, name, phone, mail = supplier
-        print(f'id: {identifier}, nome: {name}, telefone: {phone}, email: {mail}')
-
-def search(supplier):
-    identifier_search = int(input('Informe ID: '))
-    for supplier in supplier:
-        identifier, name, phone, mail = supplier
-        if (identifier == identifier_search):
-            print(f'id: {identifier}, nome: {name}, telefone: {phone}, email: {mail}')
-            break
+def remover_fornecedor():
+    if not fornecedores:
+        print("Não há fornecedores cadastrados para remover.")
+        return
+    
+    codigo = input("Digite o código do fornecedor que deseja remover: ")
+    if codigo in fornecedores:
+        del fornecedores[codigo]
+        print("Fornecedor removido com sucesso!")
     else:
-        print(f'{identifier_search} não localizado')
+        print("Código de fornecedor não encontrado.")
 
-def delete(supplier):
-    delete = int(str(input('Informe ID: ')))
-    for supplier in supplier:
-        identifier, name, phone, mail = supplier
-        if (identifier == delete):
-            identifier.pop(delete)
-            name.pop(delete)
-            phone.pop(delete)
-            mail.pop(delete)
-            print
+def exibir_fornecedor():
+    codigo = input("Digite o código do fornecedor que deseja exibir: ")
+    fornecedor = fornecedores.get(codigo)
+    if fornecedor:
+        print("Informações do fornecedor:")
+        print(f"Código: {codigo}")
+        for chave, valor in fornecedor.items():
+            print(f"{chave}: {valor}")
     else:
-        print(f'{delete} não localizado')
-main()
+        print("Código de fornecedor não encontrado.")
 
+def exibir_todos_fornecedores():
+    if not fornecedores:
+        print("Não há fornecedores cadastrados.")
+        return
+    
+    print("Fornecedores cadastrados:")
+    for codigo, fornecedor in fornecedores.items():
+        print(f"Código: {codigo}")
+        for chave, valor in fornecedor.items():
+            print(f"{chave}: {valor}")
+        print("------------------------")
 
-
+while True:
+    print("\n### Sistema de Cadastro de Fornecedores ###")
+    print("1. Adicionar fornecedor")
+    print("2. Remover fornecedor")
+    print("3. Exibir informações de um fornecedor")
+    print("4. Exibir todos os fornecedores cadastrados")
+    print("0. Sair")
+    
+    opcao = input("Digite o número da opção desejada: ")
+    
+    if opcao == '1':
+        adicionar_fornecedor()
+    elif opcao == '2':
+        remover_fornecedor()
+    elif opcao == '3':
+        exibir_fornecedor()
+    elif opcao == '4':
+        exibir_todos_fornecedores()
+    elif opcao == '0':
+        print("Saindo do sistema...")
+        break
+    else:
+        print("Opção inválida. Tente novamente.")
